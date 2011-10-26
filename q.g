@@ -17,8 +17,8 @@ program:   stat+
 stat: print
     | table
     | insert
-    |   assign
-    |   query
+    | assign
+    | query
     ;
 
 print:  'print' expr ';' {interp.print($expr.value);}
@@ -64,8 +64,8 @@ expr returns [value] // access as $expr.value in other rules
 // END: expr
 
 query returns [value]
-    :   'select' columns+=ID (',' columns+=ID)* 'from' tbl=ID
-        (   'where' key=ID '=' expr
+    :   'select' columns+=$ID.text (',' columns+=$ID.text)* 'from' tbl=ID
+        (   'where' key=$ID.text '=' expr
             {$value = interp.select($tbl.text, $columns, $key.text, $expr.value);}
         |   {$value = interp.select($tbl.text, $columns);}
         )

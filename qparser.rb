@@ -6,7 +6,7 @@
 # Ruby runtime library version: 1.8.11
 # Input grammar file: q.g
 # Generated at: 2011-10-23 16:47:25
-# 
+#
 
 # ~~~> start load path setup
 this_directory = File.expand_path( File.dirname( __FILE__ ) )
@@ -15,13 +15,13 @@ $LOAD_PATH.unshift( this_directory ) unless $LOAD_PATH.include?( this_directory 
 antlr_load_failed = proc do
   load_path = $LOAD_PATH.map { |dir| '  - ' << dir }.join( $/ )
   raise LoadError, <<-END.strip!
-  
+
 Failed to load the ANTLR3 runtime library (version 1.8.11):
 
 Ensure the library has been installed on your system and is available
 on the load path. If rubygems is available on your system, this can
 be done with the command:
-  
+
   gem install antlr3
 
 Current load path:
@@ -31,45 +31,45 @@ Current load path:
 end
 
 defined?( ANTLR3 ) or begin
-  
+
   # 1: try to load the ruby antlr3 runtime library from the system path
   require 'antlr3'
-  
+
 rescue LoadError
-  
+
   # 2: try to load rubygems if it isn't already loaded
   defined?( Gem ) or begin
     require 'rubygems'
   rescue LoadError
     antlr_load_failed.call
   end
-  
+
   # 3: try to activate the antlr3 gem
   begin
     Gem.activate( 'antlr3', '~> 1.8.11' )
   rescue Gem::LoadError
     antlr_load_failed.call
   end
-  
+
   require 'antlr3'
-  
+
 end
 # <~~~ end load path setup
 
 
 module Q
   # TokenData defines all of the token type integer values
-  # as constants, which will be included in all 
+  # as constants, which will be included in all
   # ANTLR-generated recognizers.
   const_defined?( :TokenData ) or TokenData = ANTLR3::TokenScheme.new
 
   module TokenData
 
     # define the token constants
-    define_tokens( :T__24 => 24, :T__23 => 23, :T__22 => 22, :T__21 => 21, 
-                   :T__20 => 20, :INT => 5, :ID => 4, :EOF => -1, :T__9 => 9, 
-                   :T__19 => 19, :WS => 8, :T__16 => 16, :T__15 => 15, :T__18 => 18, 
-                   :T__17 => 17, :T__12 => 12, :T__11 => 11, :T__14 => 14, 
+    define_tokens( :T__24 => 24, :T__23 => 23, :T__22 => 22, :T__21 => 21,
+                   :T__20 => 20, :INT => 5, :ID => 4, :EOF => -1, :T__9 => 9,
+                   :T__19 => 19, :WS => 8, :T__16 => 16, :T__15 => 15, :T__18 => 18,
+                   :T__17 => 17, :T__12 => 12, :T__11 => 11, :T__14 => 14,
                    :T__13 => 13, :T__10 => 10, :COMMENT => 7, :STRING => 6 )
 
     # register the proper human-readable name or literal value
@@ -78,18 +78,18 @@ module Q
     # this is necessary because anonymous tokens, which are
     # created from literal values in the grammar, do not
     # have descriptive names
-    register_names( "ID", "INT", "STRING", "COMMENT", "WS", "'print'", "';'", 
-                    "'create'", "'table'", "'('", "'primary'", "'key'", 
-                    "','", "')'", "'='", "'insert'", "'into'", "'set'", 
+    register_names( "ID", "INT", "STRING", "COMMENT", "WS", "'print'", "';'",
+                    "'create'", "'table'", "'('", "'primary'", "'key'",
+                    "','", "')'", "'='", "'insert'", "'into'", "'set'",
                     "'select'", "'from'", "'where'" )
-    
+
   end
 
 
   class Parser < ANTLR3::Parser
     @grammar_home = Q
 
-    RULE_METHODS = [ :program, :stat, :print, :table, :assign, :insert, 
+    RULE_METHODS = [ :program, :stat, :print, :table, :assign, :insert,
                      :set_fields, :set, :expr, :query ].freeze
 
 
@@ -100,27 +100,20 @@ module Q
     rescue NoMethodError => error
       # ignore
     end
-
-    def initialize( input, options = {} )
-      super( input, options )
-
-
+    attr_accessor :interp;
+    def initialize(input, interp)
+      super(input)
+      @interp = interp
     end
-
-        attr_accessor :interp;
-        def initialize(input, interp)
-          super(input)
-          @interp = interp
-        end
 
     # - - - - - - - - - - - - Rules - - - - - - - - - - - - -
 
-    # 
+    #
     # parser rule program
-    # 
+    #
     # (in q.g)
     # 14:1: program : ( stat )+ ;
-    # 
+    #
     def program
       # -> uncomment the next line to manually enable rule tracing
       # trace_in( __method__, 1 )
@@ -164,17 +157,17 @@ module Q
         # trace_out( __method__, 1 )
 
       end
-      
-      return 
+
+      return
     end
 
 
-    # 
+    #
     # parser rule stat
-    # 
+    #
     # (in q.g)
     # 17:1: stat : ( print | table | insert | assign | query );
-    # 
+    #
     def stat
       # -> uncomment the next line to manually enable rule tracing
       # trace_in( __method__, 2 )
@@ -232,17 +225,17 @@ module Q
         # trace_out( __method__, 2 )
 
       end
-      
-      return 
+
+      return
     end
 
 
-    # 
+    #
     # parser rule print
-    # 
+    #
     # (in q.g)
     # 24:1: print : 'print' expr ';' ;
-    # 
+    #
     def print
       # -> uncomment the next line to manually enable rule tracing
       # trace_in( __method__, 3 )
@@ -268,17 +261,17 @@ module Q
         # trace_out( __method__, 3 )
 
       end
-      
-      return 
+
+      return
     end
 
 
-    # 
+    #
     # parser rule table
-    # 
+    #
     # (in q.g)
     # 28:1: table : 'create' 'table' tbl= ID '(' 'primary' 'key' key= ID ( ',' columns+= ID )+ ')' ';' ;
-    # 
+    #
     def table
       # -> uncomment the next line to manually enable rule tracing
       # trace_in( __method__, 4 )
@@ -339,17 +332,17 @@ module Q
         # trace_out( __method__, 4 )
 
       end
-      
-      return 
+
+      return
     end
 
 
-    # 
+    #
     # parser rule assign
-    # 
+    #
     # (in q.g)
     # 36:1: assign : ID '=' expr ';' ;
-    # 
+    #
     def assign
       # -> uncomment the next line to manually enable rule tracing
       # trace_in( __method__, 5 )
@@ -377,17 +370,17 @@ module Q
         # trace_out( __method__, 5 )
 
       end
-      
-      return 
+
+      return
     end
 
 
-    # 
+    #
     # parser rule insert
-    # 
+    #
     # (in q.g)
     # 40:1: insert : 'insert' 'into' ID 'set' set_fields[interp.tables.get($ID.text)] ';' ;
-    # 
+    #
     def insert
       # -> uncomment the next line to manually enable rule tracing
       # trace_in( __method__, 6 )
@@ -401,7 +394,7 @@ module Q
         __ID4__ = match( ID, TOKENS_FOLLOWING_ID_IN_insert_208 )
         match( T__21, TOKENS_FOLLOWING_T__21_IN_insert_210 )
         @state.following.push( TOKENS_FOLLOWING_set_fields_IN_insert_212 )
-        set_fields5 = set_fields( interp.tables.get(__ID4__.text) )
+        set_fields5 = set_fields( interp.tables[__ID4__.text] )
         @state.following.pop
         match( T__10, TOKENS_FOLLOWING_T__10_IN_insert_215 )
         # --> action
@@ -417,23 +410,23 @@ module Q
         # trace_out( __method__, 6 )
 
       end
-      
-      return 
+
+      return
     end
 
 
-    # 
+    #
     # parser rule set_fields
-    # 
+    #
     # (in q.g)
     # 47:1: set_fields[t] returns [row] : set[$row] ( ',' set[$row] )* ;
-    # 
+    #
     def set_fields( t )
       # -> uncomment the next line to manually enable rule tracing
       # trace_in( __method__, 7 )
       row = nil
       # - - - - @init action - - - -
-       row =  Row.new(t.columns) 
+       row =  Row.new(t.columns)
 
       begin
         # at line 49:9: set[$row] ( ',' set[$row] )*
@@ -471,17 +464,17 @@ module Q
         # trace_out( __method__, 7 )
 
       end
-      
+
       return row
     end
 
 
-    # 
+    #
     # parser rule set
-    # 
+    #
     # (in q.g)
     # 51:1: set[row] : ID '=' expr ;
-    # 
+    #
     def set( row )
       # -> uncomment the next line to manually enable rule tracing
       # trace_in( __method__, 8 )
@@ -508,17 +501,17 @@ module Q
         # trace_out( __method__, 8 )
 
       end
-      
-      return 
+
+      return
     end
 
 
-    # 
+    #
     # parser rule expr
-    # 
+    #
     # (in q.g)
     # 58:1: expr returns [value] : ( ID | INT | STRING | query );
-    # 
+    #
     def expr
       # -> uncomment the next line to manually enable rule tracing
       # trace_in( __method__, 9 )
@@ -580,17 +573,17 @@ module Q
         # trace_out( __method__, 9 )
 
       end
-      
+
       return value
     end
 
 
-    # 
+    #
     # parser rule query
-    # 
+    #
     # (in q.g)
     # 66:1: query returns [value] : 'select' columns+= ID ( ',' columns+= ID )* 'from' tbl= ID ( 'where' key= ID '=' expr | ) ;
-    # 
+    #
     def query
       # -> uncomment the next line to manually enable rule tracing
       # trace_in( __method__, 10 )
@@ -604,7 +597,7 @@ module Q
       begin
         # at line 67:9: 'select' columns+= ID ( ',' columns+= ID )* 'from' tbl= ID ( 'where' key= ID '=' expr | )
         match( T__22, TOKENS_FOLLOWING_T__22_IN_query_376 )
-        columns = match( ID, TOKENS_FOLLOWING_ID_IN_query_380 )
+        columns = match( ID, TOKENS_FOLLOWING_ID_IN_query_380 ).text
         list_of_columns << columns
 
         # at line 67:30: ( ',' columns+= ID )*
@@ -620,7 +613,7 @@ module Q
           when 1
             # at line 67:31: ',' columns+= ID
             match( T__16, TOKENS_FOLLOWING_T__16_IN_query_383 )
-            columns = match( ID, TOKENS_FOLLOWING_ID_IN_query_387 )
+            columns = match( ID, TOKENS_FOLLOWING_ID_IN_query_387 ).text
             list_of_columns << columns
 
 
@@ -655,7 +648,7 @@ module Q
           # <-- action
 
         when 2
-          # at line 70:13: 
+          # at line 70:13:
           # --> action
           value =  interp.select(tbl.text, list_of_columns)
           # <-- action
@@ -671,7 +664,7 @@ module Q
         # trace_out( __method__, 10 )
 
       end
-      
+
       return value
     end
 

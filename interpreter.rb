@@ -1,10 +1,12 @@
 class Interpreter
-  attr_accessor :lexer, :tokens, :parser, :tables, :listener, :rows
+  attr_accessor :lexer, :tokens, :parser, :tables, :listener, :rows, :globals
   def initialize(input)
     @lexer = Q::Lexer.new(ANTLR3::StringStream.new(input))
     @tokens = ANTLR3::CommonTokenStream.new(lexer)
     @parser = Q::Parser.new(tokens, self)
     @tables = {}
+    @globals = {}
+    parser.program
   end
 
   def listener
@@ -35,4 +37,21 @@ class Interpreter
     end
     rs
   end
+
+  def store(name, object)
+    @globals[name] = object
+  end
+
+  def load(name)
+    @globals[name]
+  end
+
+  def print(object)
+    if object.is_a?(ResultSet)
+      puts object.results.map{|result| result.join(',')}.join('\n')
+    else
+      puts object
+    end
+  end
+
 end

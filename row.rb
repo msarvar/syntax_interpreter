@@ -5,7 +5,14 @@ class Row
   end
 
   def get_columns(*args)
-    args.flatten!.empty? ? values.values : values.select {|key| args.include?(key)}.values
+    args = args.flatten
+    if args.empty?
+      values.values
+    else
+      values.to_a.map do |element|
+        element[1] if args.include?(element[0])
+      end
+    end
   end
 
   def set(column_name, value)
