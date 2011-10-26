@@ -1,0 +1,7 @@
+require File.expand_path('qlexer')
+require File.expand_path('qparser')
+require File.expand_path('row')
+require File.expand_path('table')
+require File.expand_path('result_set')
+require File.expand_path('interpreter_listener')
+require File.expand_path('interpreter')
